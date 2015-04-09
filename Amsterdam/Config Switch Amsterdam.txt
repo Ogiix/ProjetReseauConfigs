@@ -1,0 +1,41 @@
+//--------------------------------------
+//        Switch HP 1810-8g
+//--------------------------------------
+
+en
+conf t
+//Configuration global/securité
+	hostname SwitchAmsterdam
+
+//assigner les mdp //mdp: Admin123
+	password manager user-name admin
+	password operator user-name operator
+
+//activation de ssh
+	crypto key generate ssh rsa
+	ip ssh
+
+
+//configuration des Vlans
+
+	//vlan 10 direction
+		vlan 10 name Direction
+		untagged e 1-2
+		tagged e 7-8
+		exit
+	//vlan 42 ManagementNetwork /par defaut
+		vlan 42 name ManagementNetwork
+		
+		primary-vlan 42
+		management-vlan 42
+		ip address 10.10.42.251/24		
+
+		tagged e 7-8
+		exit
+	//vlan 60 Logistique
+		vlan 60 name Logistique
+		untagged e 3-6
+		tagged e 7-8
+		exit
+
+write memory

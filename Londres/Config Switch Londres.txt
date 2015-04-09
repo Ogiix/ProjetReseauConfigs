@@ -1,0 +1,49 @@
+//--------------------------------------
+//        Switch HP 2510-48
+//--------------------------------------
+
+en
+conf t
+//Configuration global/securité
+	hostname SwitchLondon
+
+//assigner les mdp //mdp: Admin123
+	password manager user-name admin
+	password operator user-name operator
+
+//activation de ssh
+	crypto key generate ssh rsa
+	ip ssh
+
+
+//configuration des Vlans
+
+	//vlan 10 direction
+		vlan 10 name Direction
+		untagged e 1-10
+		tagged e 44-48
+		exit
+	//vlan 42 ManagementNetwork /par defaut
+		vlan 42 name ManagementNetwork
+		
+		primary-vlan 42
+		management-vlan 42
+		ip address 10.10.42.250/24		
+
+		tagged e 44-48
+		exit
+	//vlan 50 chercheurs
+		vlan 50 name Chercheurs
+		untagged e 11-24
+		tagged e 44-48
+		exit
+	//vlan 100 Wifi
+		vlan 100 name WIFI
+		untagged e 40-44
+		tagged e 44-48
+		exit
+
+
+
+
+write memory
