@@ -1,0 +1,190 @@
+!-------------Switch-L2-2960-1-------------
+!
+enable
+conf t
+!
+hostname PARIS-SW-01
+!
+service password-encryption
+enable secret cisco
+line console 0
+password cisco
+logging synchronous
+login
+exit
+!
+ip ssh version 2
+line vty 0 4
+transport input ssh
+login local
+exit
+username admin password cisco
+!
+!---VLAN---
+!
+vlan 1
+	name NotUsed
+	exit
+vlan 10
+	name Direction
+	exit
+!
+vlan 20
+	name Commerciaux
+	exit
+!
+vlan 30
+	name Employes
+	exit
+!
+vlan 40
+	name PROD
+	exit
+!
+vlan 41
+	name ITservice
+	exit
+!
+vlan 42
+	name ManagementNetwork
+	exit
+!
+vlan 100
+	name WIFIguest
+	exit
+!
+vlan 150
+	name voip
+	exit
+!
+!---interfaces-VLAN---
+!
+interface vlan 1
+	description "Not used"
+	shut
+	exit
+!
+interface vlan 10
+	description Direction
+	no shut
+	exit
+!
+interface vlan 20
+	description Commerciaux
+	no shut
+	exit
+!
+interface vlan 30
+	description Employes
+	no shut
+	exit
+!
+interface vlan 40
+	description Prod
+	no shut
+	exit
+!
+interface vlan 41
+	description ITservice
+	no shut
+	exit
+!
+interface vlan 42
+	description "Management Network"
+	ip address 172.16.42.4 255.255.255.0
+	no shut
+	exit
+!
+interface vlan 100
+	description WIFI
+	no shut
+	exit
+!
+interface vlan 150
+	description voIP
+	shut
+	exit
+!
+!---interface-ports---
+!
+interface range fa0/ 0-24
+	shut
+	exit
+!
+interface fa0/1
+	description Direction
+	switchport mode access
+	switchport access vlan 10
+	no shut
+	exit
+!
+interface fa0/5
+	description Commerciaux
+	switchport mode access
+	switchport access vlan 20
+	no shut
+	exit
+!
+interface fa0/9
+	description Employes
+	switchport mode access
+	switchport access vlan 30
+	no shut
+	exit
+!
+interface fa0/13
+	description Prod
+	switchport mode access
+	switchport access vlan 40
+	no shut
+	exit
+!
+interface fa0/17
+	description ITservice
+	switchport mode access
+	switchport access vlan 41
+	no shut
+	exit
+!
+interface fa0/19
+	description ManagementNetwork
+	switchport mode access
+	switchport access vlan 42
+	no shut
+	exit
+!
+!---interface-voip---
+!
+interface fa0/21
+	description "voIP"
+	switchport voice vlan 150
+	no shut
+	exit
+!
+!---interface-wifi---
+!
+interface fa0/22
+	description "TRUNK vers AP"
+	switchport trunk encapsulation dot1q
+	stwichport mode trunk
+	no shut
+	exit
+!
+!---interface-R---
+!
+interface fa0/23
+	description "TRUNK vers R"
+	switchport trunk encapsulation dot1q
+	switchport mode trunk
+	no shut
+	exit
+!
+interface fa0/24
+	description "TRUNK vers R"
+	switchport trunk encapsulation dot1q
+	switchport mode trunk
+	no shut
+	exit
+!
+end
+copy running-config startup-config
