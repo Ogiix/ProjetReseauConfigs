@@ -1,0 +1,243 @@
+!###Paris Site
+!#device : Switch Layer 3
+!# 24 ports !
+
+!# INFO
+!# VLANs
+!#
+
+
+enable
+config t
+hostname PARIS-SWL3-01
+
+!######## SECURITY #########
+
+!--disable all ports ----
+interface range fa0/1 - 24
+shutdown
+exit
+
+interface range gigabitEthernet 0/1 - 2 
+shutdown
+exit
+
+
+
+!######## CONFIG #########
+
+!--------- interfaces -----------
+
+!----- interfaces etherChannel between 2 SWL3 -----
+
+interface range fa0/1 - 2
+channel-group 1 mode active
+channel-protocol lacp
+exit
+
+interface port-channel 1
+description "EtherChannel vers PARIS-SWL3-02"
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk native vlan 666
+exit
+
+
+
+
+
+!----- interfaces trunk between 3 SW -----
+interface range fa0/21
+description "TRUNK PARIS-SW-0X"
+no shutdown
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk native vlan 666
+switchport trunk allowed vlan 10,20,30,40,41,42
+exit
+!
+interface range fa0/22
+description "TRUNK PARIS-SW-0X"
+no shutdown
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk native vlan 666
+switchport trunk allowed vlan 10,20,30,40,41,42
+exit
+!
+interface range fa0/23
+description "TRUNK PARIS-SW-0X"
+no shutdown
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk native vlan 666
+switchport trunk allowed vlan 10,20,30,40,41,42
+exit
+
+
+
+
+
+
+
+
+
+
+!----- VLANs ----
+vlan 10
+name Direction
+no shutdown
+exit
+!
+!
+vlan 20
+name Commerciaux
+no shutdown
+exit
+!
+!
+vlan 30
+name Employes
+no shutdown
+exit
+!
+!
+vlan 40
+name Prod
+no shutdown
+exit
+!
+!
+vlan 41
+name ITservice
+no shutdown
+exit
+!
+!
+vlan 42
+name ManagementNetwork
+no shutdown
+exit
+!
+!
+vlan 100
+name WIFIguest
+no shutdown
+exit
+!
+!
+vlan 150
+name voIP
+shutdown
+exit
+
+
+!--SPANNING-TREE ---
+spanning-tree vlan 10,20,30,40 root primary
+spanning-tree vlan 41,42,100 root secondary 
+
+!
+!
+interface vlan 10
+description "Administration"
+! IP hardware
+ip address 172.16.10.98 255.255.255.0
+no shutdown
+exit
+!
+!
+interface vlan 20
+description "Commerciaux"
+! IP hardware
+ip address 172.16.20.252 255.255.255.0
+no shutdown
+exit
+!
+!
+interface vlan 30
+description "Employes"
+! IP hardware
+ip address 172.16.30.252 255.255.255.0
+no shutdown
+exit
+!
+!
+interface vlan 40
+description "Prod"
+! IP hardware
+ip address 172.16.40.10 255.255.255.0
+no shutdown
+exit
+!
+!
+interface vlan 41
+description "ITservice"
+! IP hardware
+ip address 172.16.41.252 255.255.255.0
+no shutdown
+exit
+!
+!
+interface vlan 42
+description "ManagementNetwork"
+! IP hardware
+ip address 172.16.42.252 255.255.255.0
+no shutdown
+exit
+
+
+
+!-- Interface VLANs / HSRP technology---
+
+!####### primary VLANs
+interface vlan 10
+!IP virtuelle(GW)
+standby 10 ip 172.16.10.100
+standby 10 priority 150
+standby 10 preempt
+!standby 1 track fa0/23 WHY NOT ?
+exit
+!
+interface vlan 20
+!IP virtuelle(GW)
+standby 20 ip 172.16.20.254
+standby 20 priority 150
+standby 20 preempt
+exit
+!
+interface vlan 30
+!IP virtuelle(GW)
+standby 30 ip 172.16.30.254
+standby 30 priority 150
+standby 30 preempt
+exit
+!
+interface vlan 40
+!IP virtuelle(GW)
+standby 40 ip 172.16.40.15
+standby 40 priority 150
+standby 40 preempt 
+exit
+!
+!####### secondary VLANs
+interface vlan 41
+!IP virtuelle(GW)
+standby 41 ip 172.16.41.254
+standby 41 preempt
+exit
+!
+interface vlan 42
+!IP virtuelle(GW)
+standby 42 ip 172.16.42.254
+standby 42 preempt
+exit
+!
+!interface vlan 100
+!IP virtuelle(GW)
+!standby 100 ip 172.16.42.254
+!standby 42 preempt
+!exit
+!
+
+exit
+copy running-config startup-config
