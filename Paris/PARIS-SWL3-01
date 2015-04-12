@@ -10,7 +10,22 @@
 enable
 config t
 hostname PARIS-SWL3-01
-
+!
+!
+service password-encryption
+enable secret cisco
+line console 0
+password cisco
+logging synchronous
+login
+exit
+!
+ip ssh version 2
+line vty 0 4
+transport input ssh
+login local
+exit
+username admin password cisco
 !######## SECURITY #########
 
 !--disable all ports ----
