@@ -2,15 +2,9 @@
 !#device : Switch Layer 3
 !# 24 ports !
 
-!# INFO
-!# VLANs
-!#
-
-
 enable
 config t
 hostname PARIS-SWL3-02
-
 !
 !
 service password-encryption
@@ -47,9 +41,10 @@ exit
 
 !----- interfaces etherChannel between 2 SWL3 -----
 
-interface range fa0/1 - 2
+interface range fa0/23 - 24
 channel-group 1 mode active
 channel-protocol lacp
+no shutdown
 exit
 
 interface port-channel 1
@@ -60,38 +55,33 @@ switchport trunk native vlan 666
 exit
 
 
-
-
-
 !----- interfaces trunk between 3 SW -----
-interface range fa0/21
-description "TRUNK PARIS-SW-0X"
+interface range fa0/20
+description "TRUNK PARIS-SW-01"
 no shutdown
 switchport trunk encapsulation dot1q
 switchport mode trunk
 switchport trunk native vlan 666
-switchport trunk allowed vlan 10,20,30,40,41,42
+switchport trunk allowed vlan 10,20,30,40,41,42,100
+exit
+!
+interface range fa0/21
+description "TRUNK PARIS-SW-02"
+no shutdown
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk native vlan 666
+switchport trunk allowed vlan 10,20,30,40,41,42,100
 exit
 !
 interface range fa0/22
-description "TRUNK PARIS-SW-0X"
+description "TRUNK PARIS-SW-DMZ"
 no shutdown
 switchport trunk encapsulation dot1q
 switchport mode trunk
 switchport trunk native vlan 666
-switchport trunk allowed vlan 10,20,30,40,41,42
+switchport trunk allowed vlan 40,101
 exit
-!
-interface range fa0/23
-description "TRUNK PARIS-SW-0X"
-no shutdown
-switchport trunk encapsulation dot1q
-switchport mode trunk
-switchport trunk native vlan 666
-switchport trunk allowed vlan 10,20,30,40,41,42
-exit
-
-
 
 
 !----- VLANs ----
@@ -137,16 +127,28 @@ no shutdown
 exit
 !
 !
+
+vlan 101
+name DMZ
+no shutdown
+exit
+!
+!
 vlan 150
 name voIP
 shutdown
 exit
 
+vlan 666
+name bin
+no shutdown
+exit
+
 
 !--SPANNING-TREE ---
 
-spanning-tree vlan 41,42,100 root primary
-spanning-tree vlan 10,20,30,40 root secondary 
+spanning-tree vlan 41,42,100,101 root primary
+spanning-tree vlan 10,20,30,40,150 root secondary 
 
 !
 !
@@ -196,12 +198,55 @@ description "ManagementNetwork"
 ip address 172.16.42.253 255.255.255.0
 no shutdown
 exit
-
+!
+!-------NO ACTIVE
+!interface vlan 100
+!description "WifiGuest"
+! IP hardware
+!ip address
+!shutdown
+!exit
+!
+!
+interface vlan 101
+description "DMZ"
+ip address 192.168.101.253 255.255.255.0
+no shutdown
+exit
 
 
 !-- Interface VLANs / HSRP technology---
 
+
 !####### primary VLANs
+interface vlan 41
+!IP virtuelle(GW)
+standby 41 ip 172.16.41.254
+standby 41 preempt
+exit
+!
+interface vlan 42
+!IP virtuelle(GW)
+standby 42 ip 172.16.42.254
+standby 42 preempt
+exit
+!
+!interface vlan 100
+!IP virtuelle(GW)
+!standby 100 ip 172.16.42.254
+!standby 100 preempt
+!exit
+!
+!
+interface vlan 101
+!IP virtuelle(GW)
+standby 101 ip 192.168.101.254
+standby 101 preempt
+exit
+!
+
+
+!####### secondary VLANs
 interface vlan 10
 !IP virtuelle(GW)
 standby 10 ip 172.16.10.100
@@ -231,26 +276,15 @@ standby 40 priority 150
 standby 40 preempt 
 exit
 !
-!####### secondary VLANs
-interface vlan 41
+
+!---- NO voIP
+!interface vlan 150
 !IP virtuelle(GW)
-standby 41 ip 172.16.41.254
-standby 41 preempt
-exit
-!
-interface vlan 42
-!IP virtuelle(GW)
-standby 42 ip 172.16.42.254
-standby 42 preempt
-exit
-!
-!interface vlan 100
-!IP virtuelle(GW)
-!standby 100 ip 172.16.42.254
-!standby 42 preempt
+!standby 100 ip 172.16.150.254
+!standby 150 priority 150
+!standby 150 preempt
 !exit
 !
 
 exit
 copy running-config startup-config
-
