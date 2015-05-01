@@ -1,0 +1,105 @@
+!##Paris Site
+!#device : Switch Layer 2
+!# 24 fa 2 gi !
+
+enable
+conf t
+hostname PARIS-SW-DMZ
+!
+service password-encryption
+enable secret cisco
+line console 0
+password cisco
+logging synchronous
+login
+exit
+!
+ip ssh version 2
+line vty 0 4
+transport input ssh
+login local
+exit
+username admin password cisco
+
+!######## SECURITY #########
+
+!--disable all ports ----
+interface range fa0/1 - 24
+shutdown
+exit
+
+interface range gigabitEthernet 0/1 - 2 
+shutdown
+exit
+
+!######## CONFIG #########
+
+!--------- VLAN -----------
+
+vlan 1
+	name NotUsed
+	exit
+!
+!
+
+vlan 40
+	name Prod
+	exit
+!
+!
+vlan 60
+	name ManagementNetwork
+	exit
+!
+!
+vlan 666
+	name bin
+	exit
+
+!--------- INTERFACE VLAN -----------
+
+
+interface vlan 60
+	description "Management Network"
+	ip address 172.16.60.6 255.255.255.0
+	no shut
+	exit
+
+!--------- INTERFACE -----------
+
+interface fa0/13
+	description DC-PARIS-01
+	switchport mode access
+	switchport access vlan 40
+	no shut
+	exit
+!
+!
+interface fa0/17
+	description WEB-PARIS
+	switchport mode access
+	switchport access vlan 40
+	shut
+	exit
+!
+!
+interface fa0/23
+	description "TRUNK vers PARIS-SWL3-01"
+	switchport trunk encapsulation dot1q
+	switchport mode trunk
+	switchport trunk native vlan 666
+	switchport trunk allowed vlan 40,60,101
+	no shut
+	exit
+!
+interface fa0/24
+	description "TRUNK vers PARIS-SWL3-02"
+	switchport trunk encapsulation dot1q
+	switchport mode trunk
+	switchport trunk native vlan 666
+	switchport trunk allowed vlan 40,60,101
+	no shut
+	exit
+!
+end
+copy running-config startup-config

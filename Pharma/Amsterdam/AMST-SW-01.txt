@@ -1,0 +1,52 @@
+!##Londres Site
+!#device : Switch Layer 2
+!# 24 fa 2 gi !
+
+en
+conf t
+hostname LOND-SW-01
+!
+!
+password manager user-name admin
+password operator user-name operator
+ip ssh
+	ip ssh key-size 1024
+	crypto key generate ssh rsa
+
+
+
+!######## CONFIG #########
+
+!--------- VLAN -----------
+
+vlan 10
+	name Direction
+	untagged 1-2
+	tagged 7-8
+	exit
+!
+!
+vlan 60
+	name ManagementNetwork
+	primary-vlan 60
+	management-vlan 60
+	ip address 172.16.61.13/24		
+	tagged 7-8
+	exit
+!
+!
+vlan 80
+	name Logistique
+	untagged 3-5
+	tagged 7-8
+	exit
+!
+!
+vlan 100
+	name WIFIguest
+	untagged 6
+	tagged 7-8
+	exit
+!
+!
+write memory
