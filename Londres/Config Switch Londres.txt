@@ -23,11 +23,11 @@ conf t
 		untagged e 1-10
 		tagged e 44-48
 		exit
-	//vlan 42 ManagementNetwork /par defaut
-		vlan 42 name ManagementNetwork
-		primary-vlan 42
-		management-vlan 42
-		ip address 172.16.42.22/24		
+	//vlan 60 ManagementNetwork /par defaut
+		vlan 60 name ManagementNetwork
+		primary-vlan 60
+		management-vlan 60
+		ip address 172.16.62.3/24		
 		tagged e 44-48
 		exit
 	//vlan 50 chercheurs

@@ -1,4 +1,4 @@
-//************************************************
+﻿//************************************************
 //               Router londre R1-1800-1
 //************************************************
 
@@ -29,23 +29,23 @@ conf t
 //configuration des interfaces
 	// e0/0 interface de lan
 	int fa 0/0
-		ip address 172.16.42.21 255.255.255.0
+		no ip add
 		no shut
 		exit
 	
 	// e0/0.10 sInterface Direction
 	int fa 0/0.10
-		ip address 172.16.10.254 255.255.255.0
+		ip address 172.16.12.254 255.255.255.0
 		exit
 		
 	// e0/0.40 sInterface Prod
 	int fa 0/0.40
-		ip address 192.168.40.90 255.255.255.0
+		ip address 192.168.42.254 255.255.255.0
 		exit	
 	
-	// e0/0.50 sInterface Chercheurs
-	int fa 0/0.50
-		ip address 172.16.50.254 255.255.255.0
+	// e0/0.70 sInterface Chercheurs
+	int fa 0/0.70
+		ip address 172.16.70.254 255.255.255.0
 		exit
 	
 	// e0/0.100 sInterface WIFI
@@ -55,7 +55,7 @@ conf t
 
 	// e0/1 interface de Wan
 	int fa 0/1
-		ip address 
+		ip address dhcp
 		no shut
 		exit
 
