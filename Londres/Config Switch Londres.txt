@@ -5,7 +5,7 @@
 en
 conf t
 //Configuration global/securité
-	hostname SwitchLondon
+	hostname LOND-SW-01
 
 //assigner les mdp //mdp: Admin123
 	password manager user-name admin
@@ -25,11 +25,9 @@ conf t
 		exit
 	//vlan 42 ManagementNetwork /par defaut
 		vlan 42 name ManagementNetwork
-		
 		primary-vlan 42
 		management-vlan 42
-		ip address 10.10.42.250/24		
-
+		ip address 172.16.42.22/24		
 		tagged e 44-48
 		exit
 	//vlan 50 chercheurs

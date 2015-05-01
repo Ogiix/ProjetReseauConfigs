@@ -1,11 +1,11 @@
-//--------------------------------------
+§//--------------------------------------
 //        Switch HP 1810-8g
 //--------------------------------------
 
 en
 conf t
 //Configuration global/securité
-	hostname SwitchAmsterdam
+	hostname AMST-SW-01
 
 //assigner les mdp //mdp: Admin123
 	password manager user-name admin
@@ -28,7 +28,7 @@ conf t
 		
 		primary-vlan 42
 		management-vlan 42
-		ip address 10.10.42.251/24		
+		ip address 172.16.42.13/24		
 
 		tagged e 7-8
 		exit

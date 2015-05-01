@@ -1,0 +1,17 @@
+Paris:
+	3560-1
+		C3560 Software (C3560-IPBASEK9-M), Version 12.2(55)SE5,
+		/c3560-ipbasek9-mz.122-55.SE5/c3560-ipbasek9-mz.122-55.SE5.bin
+	3560-2
+		C3560 Software (C3560-IPBASEK9-M), Version 12.2(55)SE5, RELE ASE SOFTWARE (fc1)
+		/c3560-ipbasek9-mz.122-55.SE5/c3560-ipbasek9-mz.122-55.SE5.bin
+		
+	2960-1
+		C2960 Boot Loader (C2960-HBOOT-M) Version 12.2(53r)SEY3
+		flash:/c2960-lanbasek9-mz.122-55.SE5/c2960-lanbasek9-mz.122-55.SE5.bin
+	2960-2
+		C2960 Boot Loader (C2960-HBOOT-M) Version 12.2(53r)SEY3
+		flash:/c2960-lanbasek9-mz.122-55.SE5/c2960-lanbasek9-mz.122-55.SE5.bin
+	2950
+		C2950 Software (C2950-I6Q4L2-M), Version 12.1(22)EA13
+		flash:/c2950-i6q4l2-mz.121-22.EA13.bin

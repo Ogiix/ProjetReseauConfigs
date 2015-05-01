@@ -1,0 +1,81 @@
+//**************************************************//
+//               PARIS-SW-01                        //
+//**************************************************//
+
+en 
+conf t
+
+hostname PARIS-SW-01
+
+//assigner les mdp //mdp: Admin123
+	password manager user-name admin
+	password operator user-name operator
+
+//activation de ssh
+	crypto key generate ssh rsa
+	ip ssh
+	
+// vlan 10 direction
+	vlan 10
+	name Direction
+	exit
+
+//20 commerciaux
+	vlan 20
+	name Commerciaux
+	exit
+
+//30 Employes
+	vlan 30
+	name Employes
+	exit
+
+//40 Prod
+	vlan 40
+	name Prod
+	exit
+
+//41 itservice
+	vlan 41
+	name ITService
+	exit
+
+//42 managementNetwork
+	vlan 42
+	name managementNetwork
+	ip address 172.16.42.4 255.255.255.0
+	exit
+	
+//configuration des interfaces
+	//Intefaces Access
+	int range fa0/1-12
+		switchport mode access
+		switchport access vlan 30
+		exit
+	int range fa0/13-15
+		switchport mode access
+		switchport access vlan 10
+		exit
+	int range fa0/16-18
+		switchport mode access
+		switchport access vlan 40
+		exit
+	int range fa 0/19-22
+		switchport mode acces
+		switchport acces vlan 41
+		exit
+	//Interfaces Trunk
+	int range fa0/23-24
+		switchport mode trunk
+		switchport trunk allowed vlan all
+		exit
+		
+		
+		
+		
+
+	
+
+
+
+

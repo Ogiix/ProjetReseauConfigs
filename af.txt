@@ -1,0 +1,4 @@
+AD
+Routeur on a stick
+Switch l2 + vlan
+wifi.

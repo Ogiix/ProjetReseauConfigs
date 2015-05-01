@@ -6,7 +6,7 @@ en
 conf t
 
 //Configuration global/securité
-	hostname RouterAmsterdam
+	hostname AMST-RT-01
 
 	//assigner les mdp //mdp: Admin123
 	line vty 0 4
@@ -29,19 +29,24 @@ conf t
 //configuration des interfaces
 	// e0/0 interface de lan
 	int fa 0/0
-		ip address 10.10.42.*** 255.255.255.0
+		ip address 172.16.42.12 255.255.255.0
 		no shut
 		exit
 	
 	// e0/0.10 sInterface Direction
 	int fa 0/0.10
-		ip address 10.10.10.253 255.255.255.0
+		ip address 172.16.10.190 255.255.255.0
 		exit
 	
-	// e0/0.50 sInterface Logistique
-	int fa 0/0.50
-		ip address 10.40.60.254 255.255.255.0
+	// e0/0.40 sInterface Prod
+	int fa 0/0.40
+		ip address 192.168.40.60 255.255.255.0
 		exit
+	
+	// e0/0.60 sInterface Logistique
+	int fa 0/0.60
+		ip address 172.16.60.254 255.255.255.0
+		exit	
 	
 
 	// e0/1 interface de Wan
@@ -56,9 +61,10 @@ conf t
 	
 //routage OSPF
 	router ospf 100
-		network 10.10.42.0 0.0.0.255
-		network 10.10.10.0 0.0.0.255
-		network 10.40.60.0 0.0.0.255
+		network 172.16.42.0 0.0.0.255
+		network 192.168.40.0 0.0.0.255
+		network 172.16.60.0 0.0.0.255
+		network 192.168.1.40 0.0.0.255
 		exit
 	
 	
