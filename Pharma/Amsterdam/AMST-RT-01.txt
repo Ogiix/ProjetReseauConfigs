@@ -25,11 +25,7 @@ username admin password cisco
 !######## SECURITY #########
 
 !--disable all ports ----
-interface range fa0/1 - 24
-shutdown
-exit
-
-interface range gigabitEthernet 0/1 - 2 
+interface range fa0/0 - 1
 shutdown
 exit
 
@@ -38,33 +34,40 @@ exit
 
 !--------- INTERFACES -----------
 
-int fa 0/0
+interface fa 0/0
 	description LAN
 	no ip add
 	no shut
 	exit
 !
 !
-int fa 0/0.10
+interface fa 0/0.10
 	description Direction
-	ip address 172.16.12.254 255.255.255.0
+	ip address 10.1.10.254 255.255.255.0
 	no shut
 	exit
 !
 !
-int fa 0/0.40
+interface fa 0/0.40
 	description Prod
-	ip address 192.168.42.254 255.255.255.0
+	ip address 10.1.40.254 255.255.255.0
 	no shut
 	exit	
 !
 !
-int fa 0/0.60
+interface fa 0/0.60
 	description ManagementNetwork
-	ip address 172.16.60.254 255.255.255.0
+	ip address 10.1.60.254 255.255.255.0
 	no shut
 	exit
 !
+!
+interface fa0/0.80
+	description Logistique
+	ip address 10.1.80.254 255.255.255.0
+	no shut
+	exit
+!	
 !
 int fa 0/1
 	Description WAN
@@ -75,11 +78,13 @@ int fa 0/1
 !
 !--------- ROUTAGE OSPF -----------
 
-	router ospf 100
-		network 172.16.42.0 0.0.0.255
-		network 192.168.40.0 0.0.0.255
-		network 172.16.60.0 0.0.0.255
-		network 192.168.1.40 0.0.0.255
+	router ospf 1
+		network 10.1.0.0 0.0.255.255 area 0
+		passive-interface fa 0/0
+		passive-interface fa 0/0.10
+		passive-interface fa 0/0.40
+		passive-interface fa 0/0.60
+		passive-interface fa 0/0.80
 		exit
 	
 !--------- ACL -----------
