@@ -43,6 +43,7 @@ interface fa 0/0
 !
 interface fa 0/0.10
 	description Direction
+	encapsulation dot1q 10
 	ip address 10.1.10.254 255.255.255.0
 	no shut
 	exit
@@ -50,6 +51,7 @@ interface fa 0/0.10
 !
 interface fa 0/0.40
 	description Prod
+	encapsulation dot1q 40
 	ip address 10.1.40.254 255.255.255.0
 	no shut
 	exit	
@@ -57,13 +59,15 @@ interface fa 0/0.40
 !
 interface fa 0/0.60
 	description ManagementNetwork
-	ip address 10.1.60.254 255.255.255.0
+	encapsulation dot1q 60
+	ip address 10.1.61.254 255.255.255.0
 	no shut
 	exit
 !
 !
 interface fa0/0.80
 	description Logistique
+	encapsulation dot1q 80
 	ip address 10.1.80.254 255.255.255.0
 	no shut
 	exit
@@ -71,7 +75,7 @@ interface fa0/0.80
 !
 int fa 0/1
 	Description WAN
-	ip address dhcp
+	ip address 10.1.60.2 255.255.255.0
 	no shut
 	exit
 !
@@ -90,7 +94,7 @@ int fa 0/1
 !--------- ACL -----------
 
 
+exit
 
 
-
-copy run start
+copy running-config startup-config
