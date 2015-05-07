@@ -4,7 +4,7 @@
 
 en
 conf t
-hostname LOND-RT-01
+hostname AMST-RT-01
 !
 !
 service password-encryption
